@@ -1,5 +1,5 @@
 # Variables
-TARGET := growth
+TARGET:=growth
 
 OUTPUT_DIR:=build
 
@@ -9,12 +9,14 @@ CC:=gcc
 
 SRC:= main.c $(wildcard src/*.c)
 
-OBJ:= $(SRC:%.c= $(OUTPUT_DIR)/%.o)
+OBJ:= $(SRC:%.c=$(OUTPUT_DIR)/%.o)
 
+## Compiling source files to object files
 $(OUTPUT_DIR)/%.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+## Linking object files to create the final executable
 $(OUTPUT_DIR)/$(TARGET): $(OBJ)
 	mkdir -p $(dir $@)
 	$(CC) -o $@ $^
