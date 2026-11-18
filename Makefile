@@ -1,28 +1,37 @@
-# Variables
-TARGET:=growth
+# Project configuration
+TARGET := main
+OUTPUT_DIR := build
 
-OUTPUT_DIR:=build
+CC := gcc
+CFLAGS := -Wall -Wextra -Wpedantic -std=c17 -Iinclude
+LDFLAGS :=
 
-CFLAGS= -Wall -Wextra -Iinclude
+# Source and object files
+SRC := main.c $(wildcard src/*.c)
+OBJ := $(patsubst %.c,$(OUTPUT_DIR)/%.o,$(SRC))
+DEP := $(OBJ:.o=.d)
 
-CC:=gcc
-
-SRC:= main.c $(wildcard src/*.c)
-
-OBJ:= $(SRC:%.c=$(OUTPUT_DIR)/%.o)
-
-## Compiling source files to object files
-$(OUTPUT_DIR)/%.o: %.c
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-## Linking object files to create the final executable
-$(OUTPUT_DIR)/$(TARGET): $(OBJ)
-	mkdir -p $(dir $@)
-	$(CC) -o $@ $^
-# Some Helpful methods
-.PHONY: all run
+# Default target
+.PHONY: all run clean
 
 all: $(OUTPUT_DIR)/$(TARGET)
-run:
+
+# Link object files
+$(OUTPUT_DIR)/$(TARGET): $(OBJ)
+	@mkdir -p $(dir $@)
+	$(CC) $(LDFLAGS) -o $@ $^
+
+# Compile source files
+$(OUTPUT_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
+
+-include $(DEP)
+
+# Run executable
+run: all
 	./$(OUTPUT_DIR)/$(TARGET)
+
+# Remove generated files
+clean:
+	rm -rf $(OUTPUT_DIR)

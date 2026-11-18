@@ -1,2 +1,45 @@
 build/
 .env
+
+./build/
+# Compiled executables
+*.out
+*.exe
+*.o
+*.a
+*.so
+*.dll
+*.dylib
+
+# Executables without extensions (common GCC output)
+main
+func
+a.out
+
+# Debugging files
+*.dSYM/
+*.core
+core
+
+# Build directories
+build/
+bin/
+dist/
+
+# IDE and editor files
+.vscode/
+.idea/
+.nvim.lua
+*.swp
+*.swo
+*~
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+.clangd
